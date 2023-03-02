@@ -102,7 +102,7 @@ header #logo img {
 	box-shadow: 0px 2px 5px rgba(0,0,0,0.2);	/*影の設定。それぞれ右へ、下へ、ぼかし幅、色の設定。*/
 	padding: 20px 10px 20px 70px;	/*左から、上、右、下、左側への余白*/
 	border-radius: 10px;	/*角丸のサイズ*/
-	color: #337942;	/*文字色*/
+	color: blue;	/*文字色*/
 }
 /*h3タグの設定*/
 #main h3 {
