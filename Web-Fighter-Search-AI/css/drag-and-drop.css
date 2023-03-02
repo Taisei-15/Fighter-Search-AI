@@ -11,6 +11,16 @@
 	justify-content: center;
 	font-size: 18px;
   }
+#submit-button {
+	margin-left:45.5%;
+	padding: 5px;
+	padding-left: 1%;
+	padding-right:1%;
+	color:#ffffff;
+	background-color: #1e90ff;
+	border-radius:5px;
+
+}
   
   #preview {
 	width: 200px;

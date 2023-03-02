@@ -26,7 +26,7 @@ submitButton.addEventListener("click", function() {
   const image = preview.querySelector("img");
   if (image) {
     // Submit the image here
-    alert("Image submitted!");
+    alert("解析中‼");
   }
 });
 
