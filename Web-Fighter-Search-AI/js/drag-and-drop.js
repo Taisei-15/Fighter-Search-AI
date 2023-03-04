@@ -5,12 +5,35 @@ const preview = document.getElementById("preview");
 
 dropzone.addEventListener("dragover", function(event) {
   event.preventDefault();
+  event.dataTransfer.dropEffect = 'copy'
 });
 
 dropzone.addEventListener("drop", function(event) {
-  event.preventDefault();
-  const files = event.dataTransfer.files;
-  handleFiles(files);
+  let itemId = ''
+    const droppedItems = []
+    event.preventDefault()
+
+    if (event.dataTransfer.items) {
+      for (const item of event.dataTransfer.items) {
+        const { kind, type } = item
+        if (kind === 'file') {
+          const file = item.getAsFile()
+          droppedItems.push(file.name)
+        } else if (kind === 'string') {
+          if (type === 'text/plain') {
+            itemId = event.dataTransfer.getData(type)
+          }
+        }
+      }
+    }
+
+    if (itemId !== '') {
+      droppedItems.push($(itemId).innerHTML)
+    }
+
+    if(droppedItems.length > 0){
+      dropzone.innerHTML = droppedItems.join(', ')
+    }
 });
 
 fileInput.addEventListener("change", function() {

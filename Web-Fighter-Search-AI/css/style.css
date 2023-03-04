@@ -8,12 +8,11 @@
 body {
 	margin: 0px;
 	padding: 0px;
-	color: #fff;	/*全体の文字色*/
+	color: #9a9a9efa;	/*全体の文字色*/
 	font-family:"ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "メイリオ", Meiryo, Osaka, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;	/*フォント種類*/
 	font-size: 14px;	/*文字サイズ*/
 	line-height: 2;		/*行間*/
-	background: url(../images/bg.png);	/*背景画像（古いブラウザ用）*/
-	background: url(../images/bg_line.png) repeat-x center top, url(../images/bg.png);/*左からカンマで区切って背景画像を2つ指定*/
+	background-color:#a4a5a0;
 	-webkit-text-size-adjust: none;
 }
 h1,h2,h3,h4,h5,p,ul,ol,li,dl,dt,dd,form,figure,form {margin: 0px;padding: 0px;font-size: 100%;}
