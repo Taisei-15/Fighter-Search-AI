@@ -56,11 +56,23 @@
 <img src="images/f16-2.jpg" alt="" class="slide3">
 </aside>
 
+<div id="progressBarContainer" class="progress invisible mb-1">
+	<div
+	  id="progressBar"
+	  class="progress-bar progress-bar-striped progress-bar-animated"
+	  role="progressbar"
+	></div>
+  </div>
+
 <div id="dropzone">
 <p>Drop your image here</p>
+<ul id="fileList" class="list-group"></ul>
 </div>
 
 <a id="submit-button" class="btn_11">Click</a>
+<button type="button" id="clearButton" class="btn btn-secondary">
+	<i class="bi bi-x"></i> Clear
+  </button>
 <div id="preview"></div>
 <script type="text/javascript" src="js/drag-and-drop.js"></script>
   

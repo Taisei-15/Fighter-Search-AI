@@ -1,44 +1,8 @@
-const dropzone = document.getElementById("dropzone");
+const $ = (id) => document.getElementById(id)
 const selectedFiles = []
-const submitButton = document.getElementById("submit-button");
-const preview = document.getElementById("preview");
-
-dropzone.addEventListener("dragover", function(event) {
-  event.preventDefault();
-  event.dataTransfer.dropEffect = 'copy'
-});
-
-dropzone.addEventListener("drop", function(event) {
-  let itemId = ''
-    const droppedItems = []
-    event.preventDefault()
-
-    if (event.dataTransfer.items) {
-      for (const item of event.dataTransfer.items) {
-        const { kind, type } = item
-        if (kind === 'file') {
-          const file = item.getAsFile()
-          droppedItems.push(file.name)
-        } else if (kind === 'string') {
-          if (type === 'text/plain') {
-            itemId = event.dataTransfer.getData(type)
-          }
-        }
-      }
-    }
-
-    if (itemId !== '') {
-      droppedItems.push($(itemId).innerHTML)
-    }
-
-    if(droppedItems.length > 0){
-      dropzone.innerHTML = droppedItems.join(', ')
-    }
-});
-
 
 window.addEventListener('load', () => {
-  submitButton.addEventListener('click', (evt) => {
+  $('uploadButton').addEventListener('click', (evt) => {
     evt.preventDefault()
 
     if (selectedFiles.length === 0) {
@@ -103,30 +67,30 @@ window.addEventListener('load', () => {
 
     xhr.send(fd)
   })
-/*
+
+  $('file1').addEventListener('change', (evt) => {
+    const input = $('file1')
+    if (!input.value) {
+      return
+    }
+    for (const f of input.files) {
+      selectedFiles.push(f)
+    }
+    updateFileList()
+    input.value = ''
+  })
+
+  $('selectButton').addEventListener('click', (evt) => {
+    evt.preventDefault()
+    $('file1').click()
+  })
+
   $('clearButton').addEventListener('click', (evt) => {
     evt.preventDefault()
     clear()
   })
-*/
-  dropzone.addEventListener('dragover', (event) => {
-    event.preventDefault()
-  })
-
-  dropzone.addEventListener('drop', (event) => {
-    event.preventDefault()
-    if(event.dataTransfer.items) {
-      for(const item of event.dataTransfer.items){
-        const { kind } = item
-        if(kind === 'file'){
-          const file = item.getAsFile()
-          selectedFiles.push(file)
-        }
-      }
-      updateFileList()
-    }
-  })
 })
+
 const setProgressBar = (percent) => {
   if (percent < 0) {
     showProgressBar(false)
