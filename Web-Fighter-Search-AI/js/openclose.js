@@ -92,9 +92,11 @@ function open_close(hdr, item)
 	if (classList(e).contains('open')) {
 		e2.style.display = '';
 	}
-	if (classList(e).contains('close')) {
+/*
+    if (classList(e).contains('close')) {
 		e2.style.display = 'none';
 	}
+    */
 }
 function OCisSmartPhone()
 {

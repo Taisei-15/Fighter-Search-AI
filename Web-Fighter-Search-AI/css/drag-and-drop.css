@@ -12,10 +12,13 @@
 	font-size: 18px;
 	border-radius:30px;
 	background-color: #ffffff;
-
+	transition: 0.7s;
   }
 #dropzone p {
 	color:black;
+}
+
+#dropzone:hover{
 	
 }
 a.btn_11 {
@@ -37,7 +40,9 @@ a.btn_11 {
 	transition: 0.5s;
 }
 a.btn_11:hover {
-	opacity: 0.5;
+	opacity: 1.5;
+	transform: scale(1.25);
+	
 }
   
   #preview {
