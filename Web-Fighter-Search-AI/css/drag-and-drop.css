@@ -29,7 +29,7 @@ a.btn_11 {
 	font-size: 25px;
 	width: 120px;
 	margin: auto;
-	padding: 1rem 3rem;
+	padding:  center;
 	font-weight: bold;
 	background-image: linear-gradient(to top, #D8D9DB 0%, #fff 80%, #FDFDFD 100%);
 	border-radius: 100vh;
@@ -45,15 +45,22 @@ a.btn_11:hover {
 	
 }
   
-  #preview {
-	width: 200px;
-	height: 200px;
-	margin: 50px auto;
-  }
-  
-  #preview img {
-	width: 100%;
-	height: 100%;
-	object-fit: contain;
-  }
+#clearButton {
+	display: block;
+	margin:2.5% auto;
+	padding:center;
+	
+}
+
+#preview {
+width: 200px;
+height: 200px;
+margin: 50px auto;
+}
+
+#preview img {
+width: 100%;
+height: 100%;
+object-fit: contain;
+}
   

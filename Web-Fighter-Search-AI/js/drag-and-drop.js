@@ -19,7 +19,7 @@ window.addEventListener('load', () => {
 
     const xhr = new XMLHttpRequest()
 
-    xhr.open('POST', '/test1')
+    xhr.open('POST', 'https://ypdx4wb54h.execute-api.us-east-1.amazonaws.com/dev')
 
     // Basic Events
     xhr.addEventListener('load', (evt) => {
