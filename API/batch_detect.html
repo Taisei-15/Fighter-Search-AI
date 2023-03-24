@@ -1,0 +1,44 @@
+
+<!-- saved from url=(0114)file:///Users/samejim/Documents/repository/sagemaker-handson/SageMakerEndpointCall/sagemaker_api/batch_detect.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252"></head><body>
+  <form enctype="multipart/form-data" method="post" name="fileinfo">
+    <label>Model Name:</label>
+    <input type="text" autocomplete="on" autofocus="" name="model"><br>
+    <label>S3 Input:</label>
+    <input type="text" name="indir"><br>
+    <label>S3 Output:</label>
+    <input type="text" name="outdir"><br>
+    <label>Instancet Type:</label>
+    <input type="text" autocomplete="on" name="instance_type" placeholder="ml.m4.xlarge"><br>
+    <label>Instance Count:</label>
+    <input type="text" autocomplete="on" name="instance_count" placeholder="1"><br>
+    <input type="submit" value="Request Batch Inference!">
+  </form>
+  <div></div>
+
+
+<script>
+const apiurl ="https://becwmu86q1.execute-api.ap-northeast-1.amazonaws.com/Prod"
+var form = document.forms.namedItem("fileinfo");
+form.addEventListener('submit', function(ev) {
+
+  var oOutput = document.querySelector("div"),
+      oData = new FormData(form);
+
+  var oReq = new XMLHttpRequest();
+  oReq.open("POST", apiurl, true);
+  oReq.onload = function(oEvent) {
+    if (oReq.status == 200) {
+      oOutput.innerHTML = "Your request is successfully sent."+ "<br>" + "Please check transform job page." + '<a href ="https://ap-northeast-1.console.aws.amazon.com/sagemaker/home?region=ap-northeast-1#/transform-jobs">https://ap-northeast-1.console.aws.amazon.com/sagemaker/home?region=ap-northeast-1#/transform-jobs</a>';
+    } else {
+      oOutput.innerHTML = "Error " + oReq.status + " occurred when trying to upload your file.<br \/>";
+    }
+  };
+
+  oReq.send(oData);
+  ev.preventDefault();
+}, false);
+</script>
+
+
+</body></html>

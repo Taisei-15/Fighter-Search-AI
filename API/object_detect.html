@@ -1,0 +1,110 @@
+<html>
+<body>
+<div class="upload"><input type="file" name="file" id="file"></div>
+<div id="result"></div>
+
+<canvas id="canvas">
+画像を表示するには、canvasタグをサポートしたブラウザが必要です。
+</canvas>
+
+</body>
+
+<script>
+
+var file = document.getElementById('file');
+var result = document.getElementById('result');
+
+const apiurl = 'APIのURL'
+
+//画像を0.4倍のスケールで表示する
+var image_ratio = 0.4;
+
+function loadLocalImage(e) {
+    // ファイル情報を取得
+    var fileData = e.target.files[0];
+
+    // 画像ファイル以外は処理を止める
+    if(!fileData.type.match('image.*')) {
+        alert('画像を選択してください');
+        return;
+    }
+
+    // FileReaderオブジェクトを使ってファイル読み込み
+    var reader = new FileReader();
+    var xhttpreq = new XMLHttpRequest()
+
+    //画像の読み込みが終わったら表示する
+    reader.onload = function() {
+
+        var img = document.createElement('img');
+        img.src = reader.result;
+        result.appendChild(img);
+        if (img.width < 400){
+          image_ratio =1;
+        }
+        img.width = img.width*image_ratio;
+    }
+
+    reader.readAsDataURL(fileData);
+
+    //200を受け取ったら処理を開始する
+    xhttpreq.onreadystatechange = function() {
+        if (xhttpreq.readyState == 4 && xhttpreq.status == 200) {
+
+          result.innerHTML ="";
+          //結果のjsonファイルをパースする
+          obj = JSON.parse(xhttpreq.responseText);
+
+          //画像表示領域canvasに画像を表示する
+          var canvas = document.getElementById('canvas');
+          var context = canvas.getContext('2d');
+          var image = new Image();
+          image.src = reader.result;
+          canvas.width = image.width;
+          canvas.height = image.height;
+          context.drawImage(image, 0, 0, image.width, image.height, 0, 0, image.width*image_ratio,image.height*image_ratio);
+
+          context.strokeStyle="#FF0000";
+          for (var item of JSON.parse(obj.body)){
+            var text = item.class_name + "(" + item.score +")";
+            context.strokeText(text, item.x_min*image_ratio, item.y_min*image_ratio);
+            context.strokeRect(
+               item.x_min*image_ratio,
+               item.y_min*image_ratio,
+               (item.x_max-item.x_min)*image_ratio,
+               (item.y_max-item.y_min)*image_ratio
+            );
+          }
+
+
+
+
+
+
+
+          // context.beginPath();
+          // // context.rect(188, 50, 200, 100);
+          // // context.fillStyle = 'yellow';
+          // // context.fill();
+          // context.lineWidth = 7;
+          // context.strokeStyle = 'black';
+          // context.stroke();
+          //
+          // context.strokeStyle="#FF0000";
+          // context.strokeRect(
+          //   10, 10, 10, 10
+          // );
+        }
+    };
+    xhttpreq.open("POST", apiurl, true);
+    xhttpreq.setRequestHeader('Content-type', 'image/jpeg');
+    xhttpreq.send(fileData);
+
+
+}
+
+// ファイルが指定された時にloadLocalImage()を実行
+file.addEventListener('change', loadLocalImage, false);
+</script>
+
+</html>
