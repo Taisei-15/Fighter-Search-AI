@@ -3,6 +3,7 @@ const dropzone = document.getElementById("dropzone");
 const selectedFiles = []
 const submitButton = document.getElementById("submit-button");
 const preview = document.getElementById("preview");
+const input = document.getElementById('file1');
 
 
 window.addEventListener('load', () => {
@@ -13,10 +14,11 @@ window.addEventListener('load', () => {
       console.log('No file is selected.')
       return
     }
-
+    console.log(evt)
     const fd = new FormData()
     selectedFiles.forEach((f) => fd.append('file1', f, f.name))
-
+    console.log(selectedFiles)
+    uploadFile(selectedFiles)
     const xhr = new XMLHttpRequest()
 
     xhr.open('POST', 'https://ypdx4wb54h.execute-api.us-east-1.amazonaws.com/dev')
@@ -153,3 +155,26 @@ const updateFileList = () => {
     fl.appendChild(li)
   }
 }
+
+async function uploadFile(event) {
+console.log(event[0])
+//ファイルを取得する
+const audio_file = event[0];
+
+//APIエンドポイントにGETリクエストを送る
+const res_signed_url = await axios.get('https://xvy8pgegy2.execute-api.ap-northeast-1.amazonaws.com/dev/presignedurlgetter');
+
+//レスポンスから署名付きURLを取り出す
+const signed_url = JSON.parse(res_signed_url.data.body).put_url;
+
+//署名付きURLにファイルをPUTする
+await axios.put(
+        signed_url,
+        audio_file,
+        {
+          headers: {
+            'Content-Type': audio_file.type
+          }
+        }
+      );
+};

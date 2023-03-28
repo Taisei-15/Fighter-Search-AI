@@ -11,37 +11,46 @@ from six import BytesIO
 from PIL import Image
 import sys
 import logging
+import pathlib
+import tensorflow as tf
+from tensorflow.keras import layers, losses, optimizers, applications
+from tensorflow.keras.utils import image_dataset_from_directory, plot_model
+import matplotlib.pyplot as plt
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 logger.addHandler(logging.StreamHandler(sys.stdout))
+IMG_SIZE = (128, 128)
 
 def model_fn(model_dir):
-    """
-    This function is called by the Chainer container during hosting when running on SageMaker with
-    values populated by the hosting environment.
-    
-    Here, we load the pre-trained model's weights. `voc_bbox_label_names` contains
-    label names, and `SSD300` defines the network architecture. We pass in the
-    number of labels and the path to the model for `SSD300` to load.
+    data_augmentation = tf.keras.Sequential()
+    data_augmentation.add(layers.RandomFlip('horizontal_and_vertical'))
+    data_augmentation.add(layers.RandomRotation(0.4))
+    preprocess_input = applications.densenet.preprocess_input
 
-    Args:
-        model_dir (str): path to the directory containing the saved model artifacts
+    # (b) create base model using ResNet50
+    IMG_SHAPE = IMG_SIZE + (3,)
+    base_model = applications.ResNet50(input_shape=IMG_SHAPE,
+                                include_top=False,
+                                weights='imagenet')
 
-    Returns:
-        a loaded Chainer model
+    # (c) Freeze layers
+    base_model.trainable = False
+    # (d) Classification layer
+    nClass = len(class_names)
 
-    For more on `model_fn` and `save`, please visit the sagemaker-python-sdk repository:
-    https://github.com/aws/sagemaker-python-sdk
+    global_avg = layers.GlobalAveragePooling2D()
+    output_layer = layers.Dense(nClass, activation='softmax')
+    inputs = tf.keras.Input(shape=IMG_SHAPE)
+    x = data_augmentation(inputs)
+    x = preprocess_input(inputs)
+    x = base_model(x)
+    x = global_avg(x)
+    outputs = output_layer(x)
 
-    For more on the Chainer container, please visit the sagemaker-chainer-containers repository:
-    https://github.com/aws/sagemaker-chainer-containers
-    """
-    # Loads a pretrained SSD model.
-    chainer.config.train = False
-    path = os.path.join(model_dir, 'ssd_model.npz')
-    model = SSD300(n_fg_class=len(voc_bbox_label_names), pretrained_model=path)
+    model = tf.keras.Model(inputs=inputs, outputs=outputs)
     return model
+
   
 def _npy_loads(data):
     """
@@ -115,3 +124,15 @@ def predict_fn(input_data, model):
         bboxes, labels, scores = model.predict([input_data])
         bbox, label, score = bboxes[0], labels[0], scores[0]
         return np.array([bbox.tolist(), label, score])
+
+    class_names = ['A10','AV8B','B1','B2','B52','C17','E2','EF2000','F117','F14','F15','F16','F18','F22','F35','F4','J20','Mig31','Mirage2000','RQ4','SR71','Su57','U2','US2','V22']
+    
+    image_batch, label_batch = pf_test.as_numpy_iterator().next()
+    predicted_labels = np.argmax(model.predict(image_batch), axis=1)
+    list_prd = []
+    
+    for prd in predicted_labels:
+        print(class_names[prd])
+        list_prd.append(class_names[prd])
+
+    return np.array(list_prd)
