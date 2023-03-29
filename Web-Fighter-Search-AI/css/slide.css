@@ -35,12 +35,10 @@
 /*画像ブロック*/
 #mainimg {
 	clear: both;width: 100%;
-	margin: 0 auto 40px;	/*上、左右、下へのブロックの外側に空けるスペース*/
+	margin: 0 0 0 0;	/*上、左右、下へのブロックの外側に空けるスペース*/
 	position: relative;
-	box-shadow: 0px 0px 10px rgba(0,0,0,0.2);	/*影の設定。右に、下に、広げる幅、rgbaは色で0,0,0は黒、0.2は透明度(0.2=20%)の事。*/
-}
-#mainimg, .slide0, .slide1, .slide2, .slide3 {
-	border-radius: 10px;	/*角丸のサイズ*/
+	background-size: cover;
+	background-position: center ;
 }
 /*３枚画像の共通設定*/
 .slide1,.slide2,.slide3 {
@@ -48,7 +46,7 @@
 	animation-iteration-count:infinite;		/*実行する回数。「infinite」は無限に繰り返す意味。*/
 	position: absolute;left:0px;top:0px;width: 100%;height: auto;
 	animation-fill-mode: both;
-	animation-delay: 1s;
+	animation-delay: 2s;
 }
 /*土台画像*/
 .slide0 {
